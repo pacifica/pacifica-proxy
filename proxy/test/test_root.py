@@ -8,7 +8,7 @@ from proxy.test.test_common import CommonCPSetup
 class TestRootObject(helper.CPWebCase, CommonCPSetup):
     """Test the uploader policy service."""
 
-    PORT = 8181
+    PORT = 8180
     HOST = '127.0.0.1'
     headers = [('Content-Type', 'application/json')]
 

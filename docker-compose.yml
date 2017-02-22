@@ -6,10 +6,18 @@ services:
       context: .
     links:
       - metadataserver:metadata
+      - archivei:archiveinterface
     ports:
-      - 8181:8181
+      - 8180:8180
     environment:
       METADATA_PORT: tcp://metadata:8121
+      ARCHIVEI_PORT: tcp://archiveinterface:8080
+
+  archivei:
+    image: pacifica/archiveinterface
+    container_name: archiveinterface
+    port:
+     - 8080:8080
 
   elasticdb:
     image: elasticsearch:2.4

@@ -14,4 +14,4 @@ docker-compose stop proxyserver
 export PYTHONPATH=$PWD
 coverage run --include='proxy/*' -m pytest -v
 coverage report -m --fail-under=100
-codeclimate-test-reporter
+#codeclimate-test-reporter

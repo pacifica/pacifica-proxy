@@ -1,5 +1,6 @@
 #!/usr/bin/python
 """Main proxy process."""
+from __future__ import print_function
 
 
 def main():

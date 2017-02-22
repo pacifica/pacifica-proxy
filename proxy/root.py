@@ -15,4 +15,4 @@ class Root(object):
     def __init__(self):
         """Create the local objects we need."""
         pass
-# pylint: enable=too-few-public-method
+# pylint: enable=too-few-public-methods

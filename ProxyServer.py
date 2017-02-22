@@ -1,6 +1,8 @@
 #!/usr/bin/python
 """Main proxy process."""
 from __future__ import print_function
+from json import dumps
+import cherrypy
 
 
 def error_page_default(**kwargs):

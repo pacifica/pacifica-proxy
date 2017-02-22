@@ -6,6 +6,7 @@
 class Root(object):
     """
     CherryPy root object class.
+
     not exposed by default the base objects are exposed
     """
 

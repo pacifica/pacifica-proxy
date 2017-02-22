@@ -16,7 +16,7 @@ services:
   archivei:
     image: pacifica/archiveinterface
     container_name: archiveinterface
-    port:
+    ports:
      - 8080:8080
 
   elasticdb:

@@ -1,7 +1,7 @@
 version: '2'
 services:
-  policyserver:
-    container_name: policyserver
+  proxyserver:
+    container_name: proxyserver
     build:
       context: .
     links:

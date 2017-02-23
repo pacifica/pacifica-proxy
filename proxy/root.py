@@ -1,5 +1,6 @@
 #!/usr/bin/python
 """CherryPy root object."""
+from proxy.files import Files
 
 
 # pylint: disable=too-few-public-methods
@@ -14,5 +15,5 @@ class Root(object):
 
     def __init__(self):
         """Create the local objects we need."""
-        pass
+        files = Files()
 # pylint: enable=too-few-public-methods

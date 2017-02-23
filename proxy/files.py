@@ -17,6 +17,7 @@ class Files(object):
 
     exposed = True
 
+    # pylint: disable=invalid-name
     @staticmethod
     def GET(hashtype, hashsum):
         """Create the local objects we need."""
@@ -27,15 +28,23 @@ class Files(object):
         )
         if len(files) == 0:
             return cherrypy.HTTPError(404)
-        file = files[0]
+        the_file = files[0]
         if NGINX_X_ACCEL:
             cherrypy.response.headers.update({
-                'X-Accel-Redirect': '/archivei_accel/{0}'.format(file['_id']),
-                'Content-Disposition': 'attachment; filename={0}'.format(file['_id']),
+                'X-Accel-Redirect': '/archivei_accel/{0}'.format(the_file['_id']),
+                'Content-Disposition': 'attachment; filename={0}'.format(the_file['name']),
                 'Content-Type': 'application/octet-stream'
             })
         else:
-            resp = requests.get('%s/%s'.format(ARCHIVEI_ENDPOINT, file['_id']), stream=True)
+            resp = requests.get('{0}/{1}'.format(ARCHIVEI_ENDPOINT, the_file['_id']), stream=True)
             mime = 'application/octet-stream'
-            return cherrypy.lib.static.serve_fileobj(resp.raw, mime, str(file['_id']))
+            response = cherrypy.serving.response
+            response.headers['Content-Type'] = mime
+            disposition = 'attachment'
+            contentd = '%s; filename="%s"' % (disposition, the_file['name'])
+            response.headers['Content-Disposition'] = contentd
+            # pylint: disable=protected-access
+            return cherrypy.lib.static._serve_fileobj(resp.raw, mime, int(the_file['size']), True)
+            # pylint: enable=protected-access
+    # pylint: enable=invalid-name
 # pylint: enable=too-few-public-methods

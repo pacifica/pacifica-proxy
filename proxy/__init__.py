@@ -13,7 +13,7 @@ METADATA_WAIT = 3
 METADATA_STATUS_URL = '{0}/groups'.format(METADATA_ENDPOINT)
 
 DEFAULT_NGINX_X_ACCEL = getenv('NGINX_ACCEL', 'False')
-NGINX_X_ACCEL = bool(DEFAULT_NGINX_X_ACCEL)
+NGINX_X_ACCEL = DEFAULT_NGINX_X_ACCEL == 'True'
 
 
 def try_meta_connect(attempts=0):

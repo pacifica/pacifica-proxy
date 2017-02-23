@@ -16,7 +16,7 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
     headers = [('Content-Type', 'application/json')]
 
     def test_files(self):
-        """Test the root object."""
+        """Test for a file."""
         files = loads(
             requests.get(
                 '{0}/files?_id=104'.format(proxy.METADATA_ENDPOINT)
@@ -28,3 +28,9 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
         self.getPage(url)
         self.assertStatus('200 OK')
         self.assertTrue(len(self.body) == the_file['size'])
+
+    def test_files_not_found(self):
+        """Test for a file that doesn't exist."""
+        url = '/files/sha256/somethingthatisnotthere'
+        self.getPage(url)
+        self.assertStatus('404 Not Found')

@@ -27,7 +27,7 @@ class Files(object):
             ).text
         )
         if len(files) == 0:
-            return cherrypy.HTTPError(404)
+            return cherrypy.HTTPError(404, "Not Found")
         the_file = files[0]
         if NGINX_X_ACCEL:
             cherrypy.response.headers.update({

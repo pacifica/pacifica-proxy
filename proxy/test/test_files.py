@@ -22,8 +22,7 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
                 '{0}/files?_id=104'.format(proxy.METADATA_ENDPOINT)
             ).text
         )
-        if len(files) == 0:
-            self.assertFalse(True)
+        self.assertTrue(len(files) > 0)
         the_file = files[0]
         url = '/files/{0}/{1}'.format(the_file['hashtype'], the_file['hashsum'])
         self.getPage(url)

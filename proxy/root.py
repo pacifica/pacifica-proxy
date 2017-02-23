@@ -15,5 +15,5 @@ class Root(object):
 
     def __init__(self):
         """Create the local objects we need."""
-        files = Files()
+        self.files = Files()
 # pylint: enable=too-few-public-methods

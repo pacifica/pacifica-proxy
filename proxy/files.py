@@ -1,5 +1,6 @@
 #!/usr/bin/python
 """CherryPy files proxy."""
+from json import loads
 import requests
 import cherrypy
 from proxy import METADATA_ENDPOINT, NGINX_X_ACCEL, ARCHIVEI_ENDPOINT
@@ -19,7 +20,11 @@ class Files(object):
     @staticmethod
     def GET(hashtype, hashsum):
         """Create the local objects we need."""
-        files = loads(requests.get('{0}/files?hashsum={1}&hashtype={2}'.format(METADATA_ENDPOINT, hashsum, hashtype)).text)
+        files = loads(
+            requests.get(
+                '{0}/files?hashsum={1}&hashtype={2}'.format(METADATA_ENDPOINT, hashsum, hashtype)
+            ).text
+        )
         if len(files) == 0:
             return cherrypy.HTTPError(404)
         file = files[0]

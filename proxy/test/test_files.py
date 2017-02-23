@@ -1,5 +1,7 @@
 #!/usr/bin/python
 """Test the files proxy object."""
+from json import loads
+import requests
 from cherrypy.test import helper
 import proxy
 from proxy.test.test_common import CommonCPSetup

@@ -34,3 +34,4 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
         url = '/files/sha256/somethingthatisnotthere'
         self.getPage(url)
         self.assertStatus('404 Not Found')
+        self.assertTrue(len(self.body) > -1)

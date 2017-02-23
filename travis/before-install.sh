@@ -4,6 +4,7 @@ sudo rm -f /usr/local/bin/docker-compose
 sudo curl -L -o /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)
 sudo chmod +x /usr/local/bin/docker-compose
 sudo service postgresql stop
+sudo service nginx stop
 
 case "$TRAVIS_PYTHON_VERSION" in
   pypy) export PYPY_VERSION="pypy-2.6.1" ;;
@@ -24,4 +25,6 @@ if [ "$RUN_LINTS" = "true" ]; then
   pip install pre-commit
 else
   pip install codeclimate-test-reporter coverage nose pytest
+  sed -e "s|@@ROOT_DIR@@|$PWD|g" < travis/nginx.conf.in > travis/nginx.conf
+  nginx -c $PWD/travis/nginx.conf &
 fi

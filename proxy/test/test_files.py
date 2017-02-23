@@ -35,3 +35,17 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
         self.getPage(url)
         self.assertStatus('404 Not Found')
         self.assertTrue(len(self.body) > -1)
+
+    def test_files_nginx(self):
+        """Test for the nginx headers of we are doing nginx proxy."""
+        proxy.NGINX_X_ACCEL = True
+        files = loads(
+            requests.get(
+                '{0}/files?_id=104'.format(proxy.METADATA_ENDPOINT)
+            ).text
+        )
+        self.assertTrue(len(files) > 0)
+        the_file = files[0]
+        url = '/files/{0}/{1}'.format(the_file['hashtype'], the_file['hashsum'])
+        resp = requests.get('http://localhost:8123{0}'.format(url))
+        self.assertTrue(resp.status_code == 200)

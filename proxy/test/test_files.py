@@ -1,5 +1,6 @@
 #!/usr/bin/python
 """Test the files proxy object."""
+import sys
 from json import loads
 import requests
 from cherrypy.test import helper
@@ -38,7 +39,7 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
 
     def test_files_nginx(self):
         """Test for the nginx headers of we are doing nginx proxy."""
-        proxy.NGINX_X_ACCEL = True
+        sys.modules['proxy.files'].NGINX_X_ACCEL = True
         files = loads(
             requests.get(
                 '{0}/files?_id=104'.format(proxy.METADATA_ENDPOINT)
@@ -47,5 +48,8 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
         self.assertTrue(len(files) > 0)
         the_file = files[0]
         url = '/files/{0}/{1}'.format(the_file['hashtype'], the_file['hashsum'])
+        self.getPage(url)
+        self.assertHeader('X-Accel-Redirect', '/archivei_accel/{0}'.format(the_file['_id']))
         resp = requests.get('http://localhost:8123{0}'.format(url))
         self.assertTrue(resp.status_code == 200)
+        sys.modules['proxy.files'].NGINX_X_ACCEL = False

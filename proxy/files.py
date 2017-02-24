@@ -31,11 +31,13 @@ class Files(object):
             raise cherrypy.HTTPError('404 Not Found', 'File does not exist.')
         the_file = files[0]
         if NGINX_X_ACCEL:
+            cherrypy.log('Hey I made it here!!!!!!')
             cherrypy.response.headers.update({
                 'X-Accel-Redirect': '/archivei_accel/{0}'.format(the_file['_id']),
                 'Content-Disposition': 'attachment; filename={0}'.format(the_file['name']),
                 'Content-Type': 'application/octet-stream'
             })
+            return ''
         else:
             resp = requests.get('{0}/{1}'.format(ARCHIVEI_ENDPOINT, the_file['_id']), stream=True)
             mime = 'application/octet-stream'

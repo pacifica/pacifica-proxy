@@ -6,3 +6,29 @@
 [![Docker Stars](https://img.shields.io/docker/stars/pacifica/proxy.svg?maxAge=2592000)](https://hub.docker.com/r/pacifica/proxy)
 [![Docker Pulls](https://img.shields.io/docker/pulls/pacifica/proxy.svg?maxAge=2592000)](https://hub.docker.com/r/pacifica/proxy)
 [![Docker Automated build](https://img.shields.io/docker/automated/pacifica/proxy.svg?maxAge=2592000)](https://hub.docker.com/r/pacifica/proxy)
+
+This service provides external access with some basic logic to redirect or
+obfuscate access to other Pacifica services that are intended to be internal
+only.
+
+## Files Access
+
+The [archive interface service](https://github.com/EMSL-MSC/pacifica-archiveinterface)
+is intended to be used by internal services to access files off the archive by
+file ID only. This can be easily iterated over by external users and should not
+be exposed externally. This service accepts a hashsum provided by the user and
+looks up a file ID based on that hashsum. The service then redirects the request
+without knowledge of the user to the archive interface to pull the file.
+
+### File Access API
+
+Example curl command
+```
+curl http://localhost:8180/files/sha1/f90a581a5099079a8f1f582dd3643b6e060cc551
+```
+
+If the file exists the file is given as an octet-stream to the user. The
+disposition header is also set with the filename defined in the metadata for
+that file.
+
+If the file does not exist a `404 Not Found` return code is given.

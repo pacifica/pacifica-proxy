@@ -32,3 +32,13 @@ disposition header is also set with the filename defined in the metadata for
 that file.
 
 If the file does not exist a `404 Not Found` return code is given.
+
+### Configuration
+
+If you are running this service behind nginx or apache this service can take
+advantage of proxy server configurations to remove a layer of redirection
+through this service that isn't needed.
+
+The [nginx configuration documentation](https://www.nginx.com/resources/wiki/start/topics/examples/x-accel/)
+describes how to set this up and example nginx.conf files are provided in our
+testing framework (`travis/nginx.conf.in`).

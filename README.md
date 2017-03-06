@@ -1,11 +1,11 @@
 # Pacifica Smart Proxy Service
-[![Build Status](https://travis-ci.org/EMSL-MSC/pacifica-proxy.svg?branch=master)](https://travis-ci.org/EMSL-MSC/pacifica-proxy)
-[![Code Climate](https://codeclimate.com/github/EMSL-MSC/pacifica-proxy/badges/gpa.svg)](https://codeclimate.com/github/EMSL-MSC/pacifica-proxy)
-[![Test Coverage](https://codeclimate.com/github/EMSL-MSC/pacifica-proxy/badges/coverage.svg)](https://codeclimate.com/github/EMSL-MSC/pacifica-proxy/coverage)
-[![Issue Count](https://codeclimate.com/github/EMSL-MSC/pacifica-proxy/badges/issue_count.svg)](https://codeclimate.com/github/EMSL-MSC/pacifica-proxy)
-[![Docker Stars](https://img.shields.io/docker/stars/pacifica/proxy.svg?maxAge=2592000)](https://hub.docker.com/r/pacifica/proxy)
-[![Docker Pulls](https://img.shields.io/docker/pulls/pacifica/proxy.svg?maxAge=2592000)](https://hub.docker.com/r/pacifica/proxy)
-[![Docker Automated build](https://img.shields.io/docker/automated/pacifica/proxy.svg?maxAge=2592000)](https://hub.docker.com/r/pacifica/proxy)
+[![Build Status](https://travis-ci.org/pacifica/pacifica-proxy.svg?branch=master)](https://travis-ci.org/pacifica/pacifica-proxy)
+[![Code Climate](https://codeclimate.com/github/pacifica/pacifica-proxy/badges/gpa.svg)](https://codeclimate.com/github/pacifica/pacifica-proxy)
+[![Test Coverage](https://codeclimate.com/github/pacifica/pacifica-proxy/badges/coverage.svg)](https://codeclimate.com/github/pacifica/pacifica-proxy/coverage)
+[![Issue Count](https://codeclimate.com/github/pacifica/pacifica-proxy/badges/issue_count.svg)](https://codeclimate.com/github/pacifica/pacifica-proxy)
+[![Docker Stars](https://img.shields.io/docker/stars/pacifica/proxy.svg?maxAge=2592000)](https://cloud.docker.com/swarm/pacifica/repository/docker/pacifica/proxy/general)
+[![Docker Pulls](https://img.shields.io/docker/pulls/pacifica/proxy.svg?maxAge=2592000)](https://cloud.docker.com/swarm/pacifica/repository/docker/pacifica/proxy/general)
+[![Docker Automated build](https://img.shields.io/docker/automated/pacifica/proxy.svg?maxAge=2592000)](https://cloud.docker.com/swarm/pacifica/repository/docker/pacifica/proxy/builds)
 
 This service provides external access with some basic logic to redirect or
 obfuscate access to other Pacifica services that are intended to be internal
@@ -13,7 +13,7 @@ only.
 
 ## Files Access
 
-The [archive interface service](https://github.com/EMSL-MSC/pacifica-archiveinterface)
+The [archive interface service](https://github.com/pacifica/pacifica-archiveinterface)
 is intended to be used by internal services to access files off the archive by
 file ID only. This can be easily iterated over by external users and should not
 be exposed externally. This service accepts a hashsum provided by the user and

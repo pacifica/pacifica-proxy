@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t pacifica/proxy .
+pip install .

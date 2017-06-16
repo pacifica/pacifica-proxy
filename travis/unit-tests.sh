@@ -33,4 +33,5 @@ coverage report -m --fail-under=100
 if [[ $CODECLIMATE_REPO_TOKEN ]] ; then
   codeclimate-test-reporter
 fi
-kill ${MD_PID} ${AI_PID}
+kill -9 ${MD_PID} ${AI_PID}
+wait ${MD_PID} ${AI_PID}

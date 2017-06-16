@@ -4,7 +4,9 @@ export POSTGRES_ENV_POSTGRES_USER=postgres
 export POSTGRES_ENV_POSTGRES_PASSWORD=
 pushd travis
 MetadataServer.py &
+MD_PID=$!
 archiveinterfaceserver.py &
+AI_PID=$!
 popd
 MAX_TRIES=60
 HTTP_CODE=$(curl -sL -w "%{http_code}\\n" localhost:8121/keys -o /dev/null || true)
@@ -31,3 +33,4 @@ coverage report -m --fail-under=100
 if [[ $CODECLIMATE_REPO_TOKEN ]] ; then
   codeclimate-test-reporter
 fi
+kill ${MD_PID} ${AI_PID}

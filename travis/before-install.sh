@@ -22,4 +22,5 @@ else
   pip install pytest
   sed -e "s|@@ROOT_DIR@@|$PWD|g" < travis/nginx.conf.in > travis/nginx.conf
   nginx -c $PWD/travis/nginx.conf &
+  echo $! > nginx.pid
 fi

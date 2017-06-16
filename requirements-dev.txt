@@ -1,8 +1,10 @@
 cherrypy
 codeclimate-test-reporter
-coverage
+coverage>4.0,<4.4
 httpretty
 pylint
 pytest
 radon
 requests
+-e git://github.com/pacifica/pacifica-metadata.git#egg=PacificaMetadata
+-e git://github.com/pacifica/pacifica-archiveinterface.git#egg=PacificaArchiveInterface

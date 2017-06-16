@@ -36,4 +36,3 @@ fi
 kill -9 ${MD_PID} ${AI_PID} || true
 wait ${MD_PID} ${AI_PID} || true
 kill $(cat nginx.pid) || true
-

@@ -11,6 +11,11 @@ events {
 http {
     include       /etc/nginx/mime.types;
     default_type  application/octet-stream;
+    client_body_temp_path @@ROOT_DIR@@/client_body;
+    proxy_temp_path @@ROOT_DIR@@/proxy;
+    fastcgi_temp_path @@ROOT_DIR@@/fastcgi;
+    uwsgi_temp_path @@ROOT_DIR@@/uwsgi;
+    scgi_temp_path @@ROOT_DIR@@/scgi;
 
     access_log  @@ROOT_DIR@@\access.log;
     sendfile        on;

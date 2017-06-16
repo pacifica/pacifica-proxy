@@ -1,6 +1,5 @@
 #!/bin/bash -xe
 
-sudo service nginx stop
 psql -c 'create database pacifica_metadata;' -U postgres
 case "$TRAVIS_PYTHON_VERSION" in
   pypy) export PYPY_VERSION="pypy-2.6.1" ;;

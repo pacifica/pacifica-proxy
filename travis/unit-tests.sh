@@ -35,3 +35,4 @@ if [[ $CODECLIMATE_REPO_TOKEN ]] ; then
 fi
 kill -9 ${MD_PID} ${AI_PID} || true
 wait ${MD_PID} ${AI_PID} || true
+jobs

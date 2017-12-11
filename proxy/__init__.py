@@ -1,19 +1,13 @@
 #!/usr/bin/python
 """Main proxy module."""
-from os import getenv
+from __future__ import print_function
+from argparse import ArgumentParser
+from json import dumps
 from time import sleep
+import cherrypy
 import requests
-
-DEFAULT_ARCHIVEI_ENDPOINT = getenv('ARCHIVEI_PORT', 'tcp://127.0.0.1:8080').replace('tcp', 'http')
-ARCHIVEI_ENDPOINT = getenv('ARCHIVEI_ENDPOINT', DEFAULT_ARCHIVEI_ENDPOINT)
-DEFAULT_METADATA_ENDPOINT = getenv('METADATA_PORT', 'tcp://127.0.0.1:8121').replace('tcp', 'http')
-METADATA_ENDPOINT = getenv('METADATA_ENDPOINT', DEFAULT_METADATA_ENDPOINT)
-METADATA_CONNECT_ATTEMPTS = 40
-METADATA_WAIT = 3
-METADATA_STATUS_URL = '{0}/groups'.format(METADATA_ENDPOINT)
-
-DEFAULT_NGINX_X_ACCEL = getenv('NGINX_ACCEL', 'False')
-NGINX_X_ACCEL = DEFAULT_NGINX_X_ACCEL == 'True'
+from proxy.root import Root
+from proxy.globals import METADATA_STATUS_URL, METADATA_CONNECT_ATTEMPTS, METADATA_WAIT, CHERRYPY_CONFIG
 
 
 def try_meta_connect(attempts=0):
@@ -31,3 +25,34 @@ def try_meta_connect(attempts=0):
             try_meta_connect(attempts)
         else:
             raise ex
+
+
+def error_page_default(**kwargs):
+    """The default error page should always enforce json."""
+    cherrypy.response.headers['Content-Type'] = 'application/json'
+    return dumps({
+        'status': kwargs['status'],
+        'message': kwargs['message'],
+        'traceback': kwargs['traceback'],
+        'version': kwargs['version']
+    })
+
+
+def main():
+    """Main method for running the server."""
+    parser = ArgumentParser(description='Run the proxy server.')
+    parser.add_argument('-c', '--config', metavar='CONFIG', type=str,
+                        default=CHERRYPY_CONFIG, dest='config',
+                        help='cherrypy config file')
+    parser.add_argument('-p', '--port', metavar='PORT', type=int,
+                        default=8180, dest='port',
+                        help='port to listen on')
+    parser.add_argument('-a', '--address', metavar='ADDRESS',
+                        default='localhost', dest='address',
+                        help='address to listen on')
+    args = parser.parse_args()
+    cherrypy.config.update({
+        'server.socket_host': args.address,
+        'server.socket_port': args.port
+    })
+    cherrypy.quickstart(Root(), '/', args.config)

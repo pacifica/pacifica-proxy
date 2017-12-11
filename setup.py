@@ -11,6 +11,9 @@ setup(name='PacificaProxy',
       description='Pacifica Proxy',
       author='David Brown',
       author_email='david.brown@pnnl.gov',
-      packages=['proxy'],
+      packages=['proxy', 'proxy.test'],
+      entry_point={
+          'console_scripts': ['ProxyServer=proxy:main'],
+      },
       scripts=['ProxyServer.py'],
       install_requires=[str(ir.req) for ir in INSTALL_REQS])

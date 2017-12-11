@@ -3,7 +3,7 @@
 from json import loads
 import requests
 import cherrypy
-from proxy import METADATA_ENDPOINT, NGINX_X_ACCEL, ARCHIVEI_ENDPOINT
+from proxy.globals import METADATA_ENDPOINT, NGINX_X_ACCEL, ARCHIVEI_ENDPOINT
 
 
 # pylint: disable=too-few-public-methods

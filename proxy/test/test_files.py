@@ -4,7 +4,7 @@ import sys
 from json import loads
 import requests
 from cherrypy.test import helper
-import proxy
+from proxy.globals import METADATA_ENDPOINT
 from proxy.test.test_common import CommonCPSetup
 
 
@@ -20,7 +20,7 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
         """Test for a file."""
         files = loads(
             requests.get(
-                '{0}/files?_id=104'.format(proxy.METADATA_ENDPOINT)
+                '{0}/files?_id=104'.format(METADATA_ENDPOINT)
             ).text
         )
         self.assertTrue(len(files) > 0)
@@ -42,7 +42,7 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
         sys.modules['proxy.files'].NGINX_X_ACCEL = True
         files = loads(
             requests.get(
-                '{0}/files?_id=104'.format(proxy.METADATA_ENDPOINT)
+                '{0}/files?_id=104'.format(METADATA_ENDPOINT)
             ).text
         )
         self.assertTrue(len(files) > 0)

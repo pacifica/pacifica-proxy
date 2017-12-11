@@ -5,7 +5,7 @@ export POSTGRES_ENV_POSTGRES_PASSWORD=
 pushd travis
 MetadataServer.py &
 MD_PID=$!
-archiveinterfaceserver.py &
+ArchiveInterfaceServer.py &
 AI_PID=$!
 popd
 MAX_TRIES=60

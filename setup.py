@@ -11,7 +11,7 @@ setup(name='PacificaProxy',
       description='Pacifica Proxy',
       author='David Brown',
       author_email='david.brown@pnnl.gov',
-      packages=['proxy', 'proxy.text'],
+      packages=['proxy', 'proxy.test'],
       entry_point={
           'console_scripts': ['ProxyServer=proxy:main'],
       },

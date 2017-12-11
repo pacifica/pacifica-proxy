@@ -29,6 +29,11 @@ echo '{ "hashsum": "'$readme_sha1'", "hashtype": "sha1", "size": '$readme_size'}
 
 export PYTHONPATH=$PWD
 coverage run --include='proxy/*' -m pytest -v
+coverage run --include='proxy/*' -a ProxyServer.py &
+SERVER_PID=$!
+sleep 2
+kill $SERVER_PID
+
 coverage report -m --fail-under=100
 if [[ $CODECLIMATE_REPO_TOKEN ]] ; then
   codeclimate-test-reporter

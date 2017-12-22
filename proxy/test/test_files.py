@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 """Test the files proxy object."""
 import sys
 from json import loads
@@ -25,7 +26,8 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
         )
         self.assertTrue(len(files) > 0)
         the_file = files[0]
-        url = '/files/{0}/{1}'.format(the_file['hashtype'], the_file['hashsum'])
+        url = '/files/{0}/{1}'.format(the_file['hashtype'],
+                                      the_file['hashsum'])
         self.getPage(url)
         self.assertStatus('200 OK')
         self.assertTrue(len(self.body) == the_file['size'])
@@ -47,9 +49,11 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
         )
         self.assertTrue(len(files) > 0)
         the_file = files[0]
-        url = '/files/{0}/{1}'.format(the_file['hashtype'], the_file['hashsum'])
+        url = '/files/{0}/{1}'.format(the_file['hashtype'],
+                                      the_file['hashsum'])
         self.getPage(url)
-        self.assertHeader('X-Accel-Redirect', '/archivei_accel/{0}'.format(the_file['_id']))
+        self.assertHeader('X-Accel-Redirect',
+                          '/archivei_accel/{0}'.format(the_file['_id']))
         resp = requests.get('http://localhost:8123{0}'.format(url))
         self.assertTrue(resp.status_code == 200)
         sys.modules['proxy.files'].NGINX_X_ACCEL = False

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 """CherryPy files proxy."""
 from json import loads
 import requests
@@ -23,7 +24,8 @@ class Files(object):
         """Create the local objects we need."""
         files = loads(
             requests.get(
-                '{0}/files?hashsum={1}&hashtype={2}'.format(METADATA_ENDPOINT, hashsum, hashtype)
+                '{0}/files?hashsum={1}&hashtype={2}'.format(
+                    METADATA_ENDPOINT, hashsum, hashtype)
             ).text
         )
 
@@ -38,7 +40,8 @@ class Files(object):
                 'Content-Type': 'application/octet-stream'
             })
             return ''
-        resp = requests.get('{0}/{1}'.format(ARCHIVEI_ENDPOINT, the_file['_id']), stream=True)
+        resp = requests.get(
+            '{0}/{1}'.format(ARCHIVEI_ENDPOINT, the_file['_id']), stream=True)
         mime = 'application/octet-stream'
         response = cherrypy.serving.response
         response.headers['Content-Type'] = mime

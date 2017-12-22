@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 """Test the main method."""
 from cherrypy.test import helper
 from proxy.root import Root

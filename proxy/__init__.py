@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 """Main proxy module."""
 from __future__ import print_function
 from argparse import ArgumentParser

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 """CherryPy root object."""
 from proxy.files import Files
 

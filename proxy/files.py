@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 """CherryPy files proxy."""
 from json import loads
 import requests
@@ -6,7 +7,6 @@ import cherrypy
 from proxy.globals import METADATA_ENDPOINT, NGINX_X_ACCEL, ARCHIVEI_ENDPOINT
 
 
-# pylint: disable=too-few-public-methods
 class Files(object):
     """
     CherryPy files object class.
@@ -17,28 +17,21 @@ class Files(object):
 
     exposed = True
 
-    # pylint: disable=invalid-name
     @staticmethod
-    def GET(hashtype, hashsum):
-        """Create the local objects we need."""
-        files = loads(
-            requests.get(
-                '{0}/files?hashsum={1}&hashtype={2}'.format(METADATA_ENDPOINT, hashsum, hashtype)
-            ).text
-        )
+    def nginx_accel(the_file):
+        """Use nginx to accelerate the transfer of the file."""
+        cherrypy.response.headers.update({
+            'X-Accel-Redirect': '/archivei_accel/{0}'.format(the_file['_id']),
+            'Content-Disposition': 'attachment; filename={0}'.format(the_file['name']),
+            'Content-Type': 'application/octet-stream'
+        })
+        return ''
 
-        if not files:
-            raise cherrypy.HTTPError('404 Not Found', 'File does not exist.')
-        the_file = files[0]
-        if NGINX_X_ACCEL:
-            cherrypy.log('Hey I made it here!!!!!!')
-            cherrypy.response.headers.update({
-                'X-Accel-Redirect': '/archivei_accel/{0}'.format(the_file['_id']),
-                'Content-Disposition': 'attachment; filename={0}'.format(the_file['name']),
-                'Content-Type': 'application/octet-stream'
-            })
-            return ''
-        resp = requests.get('{0}/{1}'.format(ARCHIVEI_ENDPOINT, the_file['_id']), stream=True)
+    @staticmethod
+    def stream_the_file(the_file):
+        """Stream the file yourself."""
+        resp = requests.get(
+            '{0}/{1}'.format(ARCHIVEI_ENDPOINT, the_file['_id']), stream=True)
         mime = 'application/octet-stream'
         response = cherrypy.serving.response
         response.headers['Content-Type'] = mime
@@ -48,5 +41,22 @@ class Files(object):
         # pylint: disable=protected-access
         return cherrypy.lib.static._serve_fileobj(resp.raw, mime, int(the_file['size']), True)
         # pylint: enable=protected-access
+
+    # pylint: disable=invalid-name
+    @staticmethod
+    def GET(hashtype, hashsum):
+        """Create the local objects we need."""
+        files = loads(
+            requests.get(
+                '{0}/files?hashsum={1}&hashtype={2}'.format(
+                    METADATA_ENDPOINT, hashsum, hashtype)
+            ).text
+        )
+
+        if not files:
+            raise cherrypy.HTTPError('404 Not Found', 'File does not exist.')
+        the_file = files[0]
+        if NGINX_X_ACCEL:
+            return Files.nginx_accel(the_file)
+        return Files.stream_the_file(the_file)
     # pylint: enable=invalid-name
-# pylint: enable=too-few-public-methods

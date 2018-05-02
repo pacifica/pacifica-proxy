@@ -70,6 +70,7 @@ def main():
                         default=False, dest='stop_later',
                         action='store_true')
     args = parser.parse_args()
+    stop_later(args.stop_later)
     cherrypy.config.update({
         'server.socket_host': args.address,
         'server.socket_port': args.port

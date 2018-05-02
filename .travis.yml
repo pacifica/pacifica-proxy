@@ -4,6 +4,10 @@ services:
 language: python
 python:
  - 2.7
+ - 3.6
+env:
+- RUN_LINTS=true
+- RUN_LINTS=
 cache:
   - apt
 
@@ -12,11 +16,6 @@ addons:
     packages:
       - nginx
 
-matrix:
-  include:
-    - python: 2.7
-    - python: 2.7
-      env: RUN_LINTS=true
 cache: pip
 
 before_install: bash -xe travis/before-install.sh

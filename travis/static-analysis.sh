@@ -1,4 +1,3 @@
 #!/bin/bash
-pylint --rcfile=pylintrc proxy
-pylint --rcfile=pylintrc ProxyServer.py setup.py
+pre-commit run -a
 radon cc proxy

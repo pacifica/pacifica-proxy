@@ -2,9 +2,11 @@
 
 export POSTGRES_ENV_POSTGRES_USER=postgres
 export POSTGRES_ENV_POSTGRES_PASSWORD=
-pushd travis
+pushd travis/metadata
 MetadataServer.py &
 MD_PID=$!
+popd
+pushd travis/archivei
 ArchiveInterfaceServer.py &
 AI_PID=$!
 popd
@@ -29,10 +31,7 @@ echo '{ "hashsum": "'$readme_sha1'", "hashtype": "sha1", "size": '$readme_size'}
 
 export PYTHONPATH=$PWD
 coverage run --include='proxy/*' -m pytest -v
-coverage run --include='proxy/*' -a ProxyServer.py &
-SERVER_PID=$!
-sleep 2
-kill $SERVER_PID
+coverage run --include='proxy/*' -a ProxyServer.py --stop-after-a-moment
 
 coverage report -m --fail-under=100
 if [[ $CODECLIMATE_REPO_TOKEN ]] ; then

@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# pylint: disable=invalid-name
 """Main proxy process."""
 import cherrypy
 from proxy import error_page_default, main

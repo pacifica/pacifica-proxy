@@ -27,7 +27,8 @@ popd
 curl -X PUT -H 'Last-Modified: Sun, 06 Nov 1994 08:49:37 GMT' --upload-file README.md http://127.0.0.1:8080/104
 readme_size=$(stat -c '%s' README.md)
 readme_sha1=$(sha1sum README.md | awk '{ print $1 }')
-echo '{ "hashsum": "'$readme_sha1'", "hashtype": "sha1", "size": '$readme_size'}' | curl -X POST -H 'content-type: application/json' -T - 'http://localhost:8121/files?_id=104'
+echo '{ "hashsum": "'$readme_sha1'", "hashtype": "sha1", "size": '$readme_size'}' > /tmp/file-104-update.json
+curl -X POST -H 'content-type: application/json' -T /tmp/file-104-update.json 'http://localhost:8121/files?_id=104'
 
 export PYTHONPATH=$PWD
 coverage run --include='proxy/*' -m pytest -v

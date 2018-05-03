@@ -37,7 +37,7 @@ install:
       Invoke-WebRequest -InFile README.md -Method PUT -Headers @{'Last-Modified'='Sun, 06 Nov 1994 08:49:37 GMT'} http://127.0.0.1:8080/104;
       $size = (Get-Item README.md).length;
       $hash = (Get-FileHash -Algorithm sha1 readme.md).hash;
-      '{ "hashsum": "'$hash'", "hashtype": "sha1", "size": '$size'}' | Out-File -filepath C:\file-104-update.json;
+      "{ \"hashsum\": \"$hash\", \"hashtype\": \"sha1\", \"size\": $size}" | Out-File -filepath C:\file-104-update.json;
       Invoke-WebRequest -InFile C:\file-104-update.json -Method POST http://127.0.0.1:8121/files?_id=104;
 
 

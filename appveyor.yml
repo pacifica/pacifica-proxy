@@ -33,7 +33,7 @@ before_test:
       $size = (Get-Item README.md).length;
       $hash = (Get-FileHash -Algorithm sha1 readme.md).hash;
       '{ "hashsum": "'+$hash+'", "hashtype": "sha1", "size": '+$size+'}' | Out-File -filepath C:\file-104-update.json;
-      Invoke-WebRequest -InFile C:\file-104-update.json -Method POST -Headers @{ "content-type": "application/json" } http://127.0.0.1:8121/files?_id=104;
+      Invoke-WebRequest -InFile C:\file-104-update.json -Method POST -Headers @{ "content-type" = "application/json" } http://127.0.0.1:8121/files?_id=104;
 
 
 install:

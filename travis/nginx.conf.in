@@ -1,7 +1,7 @@
 worker_processes  1;
 
-error_log  @@ROOT_DIR@@\error.log;
-pid        @@ROOT_DIR@@\nginx.pid;
+error_log  @@ROOT_DIR@@/error.log;
+pid        @@ROOT_DIR@@/nginx.pid;
 daemon off;
 
 events {
@@ -17,7 +17,7 @@ http {
     uwsgi_temp_path @@ROOT_DIR@@/uwsgi;
     scgi_temp_path @@ROOT_DIR@@/scgi;
 
-    access_log  @@ROOT_DIR@@\access.log;
+    access_log  @@ROOT_DIR@@/access.log;
     sendfile        on;
     keepalive_timeout  65;
 

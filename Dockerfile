@@ -1,3 +1,7 @@
-FROM python:2-onbuild
-EXPOSE 8180
-CMD [ "python", "./ProxyServer.py" ]
+FROM python:3
+WORKDIR /usr/src/app
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8121
+ENTRYPOINT [ "python", "./ProxyServer.py" ]

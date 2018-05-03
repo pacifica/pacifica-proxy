@@ -1,5 +1,6 @@
 # Pacifica Smart Proxy Service
 [![Build Status](https://travis-ci.org/pacifica/pacifica-proxy.svg?branch=master)](https://travis-ci.org/pacifica/pacifica-proxy)
+[![Build status](https://ci.appveyor.com/api/projects/status/b57r43intftb1fu9?svg=true)](https://ci.appveyor.com/project/dmlb2000/pacifica-proxy)
 [![Code Climate](https://codeclimate.com/github/pacifica/pacifica-proxy/badges/gpa.svg)](https://codeclimate.com/github/pacifica/pacifica-proxy)
 [![Test Coverage](https://codeclimate.com/github/pacifica/pacifica-proxy/badges/coverage.svg)](https://codeclimate.com/github/pacifica/pacifica-proxy/coverage)
 [![Issue Count](https://codeclimate.com/github/pacifica/pacifica-proxy/badges/issue_count.svg)](https://codeclimate.com/github/pacifica/pacifica-proxy)

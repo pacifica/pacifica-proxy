@@ -1,7 +1,7 @@
 worker_processes  1;
 
-error_log  @@ROOT_DIR@@\error.log;
-pid        @@ROOT_DIR@@\nginx.pid;
+error_log  @@ROOT_DIR@@/error.log;
+pid        @@ROOT_DIR@@/nginx.pid;
 daemon off;
 
 events {
@@ -9,7 +9,7 @@ events {
 }
 
 http {
-    include       /etc/nginx/mime.types;
+    include       @@CONF_DIR@@/mime.types;
     default_type  application/octet-stream;
     client_body_temp_path @@ROOT_DIR@@/client_body;
     proxy_temp_path @@ROOT_DIR@@/proxy;
@@ -17,7 +17,7 @@ http {
     uwsgi_temp_path @@ROOT_DIR@@/uwsgi;
     scgi_temp_path @@ROOT_DIR@@/scgi;
 
-    access_log  @@ROOT_DIR@@\access.log;
+    access_log  @@ROOT_DIR@@/access.log;
     sendfile        on;
     keepalive_timeout  65;
 

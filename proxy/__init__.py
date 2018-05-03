@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 """Main proxy module."""
 from __future__ import print_function
-from argparse import ArgumentParser
+from argparse import ArgumentParser, SUPPRESS
 from json import dumps
 from time import sleep
+from threading import Thread
 import cherrypy
 import requests
 from proxy.root import Root
@@ -39,6 +40,20 @@ def error_page_default(**kwargs):
     })
 
 
+def stop_later(doit=False):
+    """Used for unit testing stop after 10 seconds."""
+    if not doit:  # pragma: no cover
+        return
+
+    def sleep_then_exit():
+        """sleep for 10 seconds then call cherrypy exit."""
+        sleep(10)
+        cherrypy.engine.exit()
+    sleep_thread = Thread(target=sleep_then_exit)
+    sleep_thread.daemon = True
+    sleep_thread.start()
+
+
 def main():
     """Main method for running the server."""
     parser = ArgumentParser(description='Run the proxy server.')
@@ -51,7 +66,11 @@ def main():
     parser.add_argument('-a', '--address', metavar='ADDRESS',
                         default='localhost', dest='address',
                         help='address to listen on')
+    parser.add_argument('--stop-after-a-moment', help=SUPPRESS,
+                        default=False, dest='stop_later',
+                        action='store_true')
     args = parser.parse_args()
+    stop_later(args.stop_later)
     cherrypy.config.update({
         'server.socket_host': args.address,
         'server.socket_port': args.port

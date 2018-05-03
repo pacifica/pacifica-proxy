@@ -2,9 +2,11 @@
 
 export POSTGRES_ENV_POSTGRES_USER=postgres
 export POSTGRES_ENV_POSTGRES_PASSWORD=
-pushd travis
+pushd travis/metadata
 MetadataServer.py &
 MD_PID=$!
+popd
+pushd travis/archivei
 ArchiveInterfaceServer.py &
 AI_PID=$!
 popd
@@ -25,14 +27,12 @@ popd
 curl -X PUT -H 'Last-Modified: Sun, 06 Nov 1994 08:49:37 GMT' --upload-file README.md http://127.0.0.1:8080/104
 readme_size=$(stat -c '%s' README.md)
 readme_sha1=$(sha1sum README.md | awk '{ print $1 }')
-echo '{ "hashsum": "'$readme_sha1'", "hashtype": "sha1", "size": '$readme_size'}' | curl -X POST -T - 'http://localhost:8121/files?_id=104'
+echo '{ "hashsum": "'$readme_sha1'", "hashtype": "sha1", "size": '$readme_size'}' > /tmp/file-104-update.json
+curl -X POST -H 'content-type: application/json' -T /tmp/file-104-update.json 'http://localhost:8121/files?_id=104'
 
 export PYTHONPATH=$PWD
 coverage run --include='proxy/*' -m pytest -v
-coverage run --include='proxy/*' -a ProxyServer.py &
-SERVER_PID=$!
-sleep 2
-kill $SERVER_PID
+coverage run --include='proxy/*' -a ProxyServer.py --stop-after-a-moment
 
 coverage report -m --fail-under=100
 if [[ $CODECLIMATE_REPO_TOKEN ]] ; then

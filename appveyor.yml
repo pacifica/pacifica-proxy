@@ -20,8 +20,8 @@ before_test:
 - ps: >
       $env:PATH = "${env:PGSQL_PATH}\bin;${env:PYTHON}\Scripts;${env:PATH}";
       createdb pacifica_metadata;
-      Start-Process $env:PYTHON\python.exe -ArgumentList "MetadataServer.py" -WorkingDirectory "travis\metadata";
-      Start-Process $env:PYTHON\python.exe -ArgumentList "ArchiveInterfaceServer.py" -WorkingDirectory "travis\archivei";
+      Start-Process $env:PYTHON\python.exe -ArgumentList "${env:PYTHON}\Scripts\MetadataServer.py" -WorkingDirectory "travis\metadata";
+      Start-Process $env:PYTHON\python.exe -ArgumentList "${env:PYTHON}\Scripts\ArchiveInterfaceServer.py" -WorkingDirectory "travis\archivei";
       Invoke-WebRequest https://github.com/pacifica/pacifica-metadata/archive/master.zip -OutFile pacifica-metadata.zip;
       Expand-Archive pacifica-metadata.zip -DestinationPath C:\pacifica-metadata;
       sleep 20;

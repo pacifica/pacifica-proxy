@@ -25,11 +25,13 @@ install:
       Invoke-WebRequest -Uri "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.8.zip" -OutFile "elasticsearch.zip";
       Expand-Archive "elasticsearch.zip" -DestinationPath "C:\elasticsearch";
       Start-Process C:\elasticsearch\elasticsearch-5.6.8\bin\elasticsearch;
+      & "$env:PYTHON\python.exe" -m pip install pip setuptools wheel;
       & "$env:PYTHON\python.exe" -m pip install -r requirements-dev.txt;
       Start-Process $env:PYTHON\python.exe -ArgumentList "$env:PYTHON\scripts\MetadataServer.py" -WorkingDirectory "travis\metadata";
       Start-Process $env:PYTHON\python.exe -ArgumentList "$env:PYTHON\scripts\ArchiveInterfaceServer.py" -WorkingDirectory "travis\archivei";
       Invoke-WebRequest https://github.com/pacifica/pacifica-metadata/archive/master.zip -OutFile pacifica-metadata.zip;
       Expand-Archive pacifica-metadata.zip -DestinationPath C:\pacifica-metadata;
+      sleep 20;
       Invoke-WebRequest http://localhost:8121/users;
       pushd C:\pacifica-metadata\pacifica-metadata-master;
       & "$env:PYTHON\python.exe" -m test_files.loadit;

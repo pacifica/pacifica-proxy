@@ -41,6 +41,11 @@ install:
       Invoke-WebRequest -Uri "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.8.zip" -OutFile "elasticsearch.zip";
       Expand-Archive "elasticsearch.zip" -DestinationPath "C:\elasticsearch";
       Start-Process C:\elasticsearch\elasticsearch-5.6.8\bin\elasticsearch;
+      Invoke-WebRequest -Uri "http://nginx.org/download/nginx-1.14.0.zip" -OutFile nginx.zip;
+      Expand-Archive "nginx.zip" -DestinationPath "C:\nginx";
+      $nginx_conf = (Get-Content travis\nginx.conf.in);
+      $nginx_conf.replace('@@ROOT_DIR@@', $PWD) | Out-File -filepath C:\nginx\nginx-1.14.0\conf\nginx.conf;
+      Start-Process C:\nginx\nginx-1.14.0\nginx.exe -WorkingDirectory "C:\nginx\nginx-1.14.0";
       & "$env:PYTHON\python.exe" -m pip install --upgrade pip setuptools wheel;
       & "$env:PYTHON\python.exe" -m pip install -r requirements-dev.txt;
 

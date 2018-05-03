@@ -45,6 +45,7 @@ install:
       Expand-Archive "nginx.zip" -DestinationPath "C:\nginx";
       $nginx_conf = (Get-Content travis\nginx.conf.in);
       $nginx_conf.replace('@@ROOT_DIR@@', $PWD) | Out-File -filepath C:\nginx\nginx-1.14.0\conf\nginx.conf;
+      pushd C:\nginx\nginx-1.14.0; nginx.exe ; popd;
       Start-Process C:\nginx\nginx-1.14.0\nginx.exe -WorkingDirectory "C:\nginx\nginx-1.14.0";
       & "$env:PYTHON\python.exe" -m pip install --upgrade pip setuptools wheel;
       & "$env:PYTHON\python.exe" -m pip install -r requirements-dev.txt;

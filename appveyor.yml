@@ -38,13 +38,12 @@ before_test:
 
 install:
   - ps: >
+      $env:PATH = $env:PGSQL_PATH\bin;$env:PYTHON\Scripts;$env:PATH
       Invoke-WebRequest -Uri "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.8.zip" -OutFile "elasticsearch.zip";
       Expand-Archive "elasticsearch.zip" -DestinationPath "C:\elasticsearch";
       Start-Process C:\elasticsearch\elasticsearch-5.6.8\bin\elasticsearch;
       & "$env:PYTHON\python.exe" -m pip install --upgrade pip setuptools wheel;
       & "$env:PYTHON\python.exe" -m pip install -r requirements-dev.txt;
-
-
 
 build: off
 

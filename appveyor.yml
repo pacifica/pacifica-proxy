@@ -17,21 +17,11 @@ services:
   - postgresql
 
 before_test:
-  - SET PATH=%PGSQL_PATH%\bin;%PATH%
-  - createdb pacifica_metadata
-
-install:
-  - ps: >
-      Invoke-WebRequest -Uri "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.8.zip" -OutFile "elasticsearch.zip";
-      Expand-Archive "elasticsearch.zip" -DestinationPath "C:\elasticsearch";
-      Start-Process C:\elasticsearch\elasticsearch-5.6.8\bin\elasticsearch;
-      & "$env:PYTHON\python.exe" -m pip install --upgrade pip setuptools wheel;
-      & "$env:PYTHON\python.exe" -m pip install -r requirements-dev.txt;
-      pushd travis\metadata;
-      & "$env:PYTHON\python.exe" "$env:PYTHON\scripts\MetadataServer.py";
-      popd;
-      Start-Process $env:PYTHON\python.exe -ArgumentList "$env:PYTHON\scripts\MetadataServer.py" -WorkingDirectory "travis\metadata";
-      Start-Process $env:PYTHON\python.exe -ArgumentList "$env:PYTHON\scripts\ArchiveInterfaceServer.py" -WorkingDirectory "travis\archivei";
+- ps: >
+      $env:PATH = $env:PGSQL_PATH\bin;$env:PYTHON\Scripts;$env:PATH
+      createdb pacifica_metadata
+      Start-Process $env:PYTHON\python.exe -ArgumentList "MetadataServer.py" -WorkingDirectory "travis\metadata";
+      Start-Process $env:PYTHON\python.exe -ArgumentList "ArchiveInterfaceServer.py" -WorkingDirectory "travis\archivei";
       Invoke-WebRequest https://github.com/pacifica/pacifica-metadata/archive/master.zip -OutFile pacifica-metadata.zip;
       Expand-Archive pacifica-metadata.zip -DestinationPath C:\pacifica-metadata;
       sleep 20;
@@ -45,6 +35,14 @@ install:
       '{ "hashsum": "'+$hash+'", "hashtype": "sha1", "size": '+$size+'}' | Out-File -filepath C:\file-104-update.json;
       Invoke-WebRequest -InFile C:\file-104-update.json -Method POST http://127.0.0.1:8121/files?_id=104;
 
+
+install:
+  - ps: >
+      Invoke-WebRequest -Uri "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.8.zip" -OutFile "elasticsearch.zip";
+      Expand-Archive "elasticsearch.zip" -DestinationPath "C:\elasticsearch";
+      Start-Process C:\elasticsearch\elasticsearch-5.6.8\bin\elasticsearch;
+      & "$env:PYTHON\python.exe" -m pip install --upgrade pip setuptools wheel;
+      & "$env:PYTHON\python.exe" -m pip install -r requirements-dev.txt;
 
 
 

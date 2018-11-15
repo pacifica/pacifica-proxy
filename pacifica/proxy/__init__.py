@@ -1,3 +1,3 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""Test Proxy Server."""
+"""Main pacifica proxy module."""

@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """Test the main method."""
 from cherrypy.test import helper
-from proxy.root import Root
-from proxy.test.test_common import CommonCPSetup
+from pacifica.proxy.rest import Root
+from common_test import CommonCPSetup
 
 
 class TestRootObject(helper.CPWebCase, CommonCPSetup):

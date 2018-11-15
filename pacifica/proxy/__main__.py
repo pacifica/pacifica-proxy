@@ -3,41 +3,32 @@
 """Main proxy module."""
 from __future__ import print_function
 from argparse import ArgumentParser, SUPPRESS
-from json import dumps
 from time import sleep
 from threading import Thread
 import cherrypy
 import requests
-from proxy.root import Root
-from proxy.globals import METADATA_STATUS_URL, METADATA_CONNECT_ATTEMPTS, METADATA_WAIT, CHERRYPY_CONFIG
+from .rest import Root, error_page_default
+from .globals import CHERRYPY_CONFIG
+from .config import get_config
 
 
 def try_meta_connect(attempts=0):
     """Try to connect to the metadata service see if its there."""
     try:
-        ret = requests.get(METADATA_STATUS_URL.encode('utf-8'))
+        ret = requests.get(
+            get_config().get('metadata', 'status_url').encode('utf-8')
+        )
         if ret.status_code != 200:
             raise Exception('try_meta_connect: {0}\n'.format(ret.status_code))
     # pylint: disable=broad-except
     except Exception as ex:
         # pylint: enable=broad-except
-        if attempts < METADATA_CONNECT_ATTEMPTS:
-            sleep(METADATA_WAIT)
+        if attempts < get_config().getint('metadata', 'status_attempts'):
+            sleep(get_config().getint('metadata', 'status_wait'))
             attempts += 1
             try_meta_connect(attempts)
         else:
             raise ex
-
-
-def error_page_default(**kwargs):
-    """The default error page should always enforce json."""
-    cherrypy.response.headers['Content-Type'] = 'application/json'
-    return dumps({
-        'status': kwargs['status'],
-        'message': kwargs['message'],
-        'traceback': kwargs['traceback'],
-        'version': kwargs['version']
-    })
 
 
 def stop_later(doit=False):
@@ -71,8 +62,13 @@ def main():
                         action='store_true')
     args = parser.parse_args()
     stop_later(args.stop_later)
+    cherrypy.config.update({'error_page.default': error_page_default})
     cherrypy.config.update({
         'server.socket_host': args.address,
         'server.socket_port': args.port
     })
     cherrypy.quickstart(Root(), '/', args.config)
+
+
+if __name__ == '__main__':
+    main()

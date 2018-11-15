@@ -3,8 +3,8 @@
 """Common server setup code for CherryPy testing."""
 import logging
 import cherrypy
-from proxy.root import Root
-from ProxyServer import error_page_default
+from pacifica.proxy.rest import Root, error_page_default
+from pacifica.proxy.globals import CHERRYPY_CONFIG
 
 
 # pylint: disable=too-few-public-methods
@@ -18,6 +18,6 @@ class CommonCPSetup(object):
         logger.setLevel(logging.DEBUG)
         logger.addHandler(logging.StreamHandler())
         cherrypy.config.update({'error_page.default': error_page_default})
-        cherrypy.config.update('server.conf')
-        cherrypy.tree.mount(Root(), '/', 'server.conf')
+        cherrypy.config.update(CHERRYPY_CONFIG)
+        cherrypy.tree.mount(Root(), '/', CHERRYPY_CONFIG)
 # pylint: enable=too-few-public-methods

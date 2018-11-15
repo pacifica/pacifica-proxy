@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """Test the files proxy object."""
-import sys
+import os
 from json import loads
 import requests
 from cherrypy.test import helper
-from proxy.globals import METADATA_ENDPOINT
-from proxy.test.test_common import CommonCPSetup
+from pacifica.proxy.config import get_config
+from common_test import CommonCPSetup
 
 
 class TestFilesObject(helper.CPWebCase, CommonCPSetup):
@@ -19,9 +19,10 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
 
     def test_files(self):
         """Test for a file."""
+        md_url = get_config().get('metadata', 'url')
         files = loads(
             requests.get(
-                '{0}/files?_id=104'.format(METADATA_ENDPOINT)
+                '{0}/files?_id=104'.format(md_url)
             ).text
         )
         self.assertTrue(len(files) > 0)
@@ -41,10 +42,12 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
 
     def test_files_nginx(self):
         """Test for the nginx headers of we are doing nginx proxy."""
-        sys.modules['proxy.files'].NGINX_X_ACCEL = True
+        os.environ['NGINX_ACCEL'] = 'True'
         files = loads(
             requests.get(
-                '{0}/files?_id=104'.format(METADATA_ENDPOINT)
+                '{0}/files?_id=104'.format(
+                    get_config().get('metadata', 'url')
+                )
             ).text
         )
         self.assertTrue(len(files) > 0)
@@ -56,4 +59,4 @@ class TestFilesObject(helper.CPWebCase, CommonCPSetup):
                           '/archivei_accel/{0}'.format(the_file['_id']))
         resp = requests.get('http://localhost:8123{0}'.format(url))
         self.assertTrue(resp.status_code == 200)
-        sys.modules['proxy.files'].NGINX_X_ACCEL = False
+        os.environ['NGINX_ACCEL'] = 'False'

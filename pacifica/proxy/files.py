@@ -4,7 +4,7 @@
 from json import loads
 import requests
 import cherrypy
-from proxy.globals import METADATA_ENDPOINT, NGINX_X_ACCEL, ARCHIVEI_ENDPOINT
+from .config import get_config
 
 
 class Files(object):
@@ -31,7 +31,12 @@ class Files(object):
     def stream_the_file(the_file):
         """Stream the file yourself."""
         resp = requests.get(
-            '{0}/{1}'.format(ARCHIVEI_ENDPOINT, the_file['_id']), stream=True)
+            '{0}/{1}'.format(
+                get_config().get('archiveinterface', 'url'),
+                the_file['_id']
+            ),
+            stream=True
+        )
         mime = 'application/octet-stream'
         response = cherrypy.serving.response
         response.headers['Content-Type'] = mime
@@ -49,14 +54,17 @@ class Files(object):
         files = loads(
             requests.get(
                 '{0}/files?hashsum={1}&hashtype={2}'.format(
-                    METADATA_ENDPOINT, hashsum, hashtype)
+                    get_config().get('metadata', 'url'),
+                    hashsum,
+                    hashtype
+                )
             ).text
         )
 
         if not files:
             raise cherrypy.HTTPError('404 Not Found', 'File does not exist.')
         the_file = files[0]
-        if NGINX_X_ACCEL:
+        if get_config().getboolean('nginx', 'accel'):
             return Files.nginx_accel(the_file)
         return Files.stream_the_file(the_file)
     # pylint: enable=invalid-name

@@ -4,7 +4,8 @@
 from unittest import TestCase
 from json import dumps
 import httpretty
-from proxy import METADATA_STATUS_URL, try_meta_connect
+from pacifica.proxy.config import get_config
+from pacifica.proxy.__main__ import try_meta_connect
 
 
 class TestMetaConnect(TestCase):
@@ -13,7 +14,8 @@ class TestMetaConnect(TestCase):
     @httpretty.activate
     def test_meta_connect(self):
         """Test the try meta connect method."""
-        httpretty.register_uri(httpretty.GET, METADATA_STATUS_URL,
+        st_url = get_config().get('metadata', 'status_url')
+        httpretty.register_uri(httpretty.GET, st_url,
                                body=dumps([]),
                                content_type='application/json')
         try_meta_connect(0)
@@ -22,7 +24,8 @@ class TestMetaConnect(TestCase):
     @httpretty.activate
     def test_meta_connect_failure(self):
         """Test the try meta connect method but fail."""
-        httpretty.register_uri(httpretty.GET, METADATA_STATUS_URL,
+        st_url = get_config().get('metadata', 'status_url')
+        httpretty.register_uri(httpretty.GET, st_url,
                                body='',
                                status=500,
                                content_type='application/json')

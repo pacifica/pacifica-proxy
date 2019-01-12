@@ -9,8 +9,9 @@ services:
     ports:
       - 8180:8180
     environment:
-      METADATA_PORT: tcp://metadata:8121
-      ARCHIVEI_PORT: tcp://archiveinterface:8080
+      METADATA_URL: http://metadata:8121
+      METADATA_STATUS_URL: http://metadata:8121/groups
+      ARCHIVEINTERFACE_URL: http://archiveinterface:8080
 
   archivei:
     image: pacifica/archiveinterface

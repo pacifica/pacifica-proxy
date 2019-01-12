@@ -29,6 +29,7 @@ env:
 - psql -c 'create database pacifica_metadata;' -U postgres
 - export METADATA_CPCONFIG="$PWD/travis/metadata/server.conf"
 - export ARCHIVEINTERFACE_CPCONFIG="$PWD/travis/archivei/server.conf"
+- pacifica-metadata-cmd dbsync
 - pushd travis/metadata; pacifica-metadata & echo $! > metadata.pid; popd;
 - pushd travis/archivei; pacifica-archiveinterface & echo $! > archivei.pid; popd;
 - |

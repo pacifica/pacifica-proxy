@@ -42,6 +42,7 @@ before_test:
     C:\pacifica\Scripts\activate.ps1;
     $env:METADATA_CPCONFIG = "$PWD/travis/metadata/server.conf";
     $env:ARCHIVEINTERFACE_CPCONFIG = "$PWD/travis/archivei/server.conf";
+    pacifica-metadata-cmd dbsync;
     Start-Process C:\pacifica\Scripts\pacifica-metadata.exe -RedirectStandardError metadata-error.log -RedirectStandardOutput metadata-output.log;
     Start-Process C:\pacifica\Scripts\pacifica-archiveinterface.exe -RedirectStandardError archive-error.log -RedirectStandardOutput archive-output.log;
     $MD_VERSION = `pip show pacifica-metadata | grep Version: | awk '{ print $2 }';

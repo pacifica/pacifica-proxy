@@ -3,8 +3,7 @@ FROM python:3.6
 WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir uwsgi pymysql psycopg2
-ENV PROXY_CPCONFIG /usr/src/app/server.conf
+RUN pip install --no-cache-dir uwsgi
 COPY . .
 RUN pip install .
 EXPOSE 8180

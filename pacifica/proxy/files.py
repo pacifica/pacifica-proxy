@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """CherryPy files proxy."""
-from json import loads
 import requests
 import cherrypy
 from .config import get_config
@@ -22,7 +21,7 @@ class Files(object):
         """Use nginx to accelerate the transfer of the file."""
         cherrypy.response.headers.update({
             'X-Accel-Redirect': '/archivei_accel/{0}'.format(the_file['_id']),
-            'Content-Disposition': 'attachment; filename={0}'.format(the_file['name']),
+            'Content-Disposition': u'attachment; filename={0}'.format(the_file['name']),
             'Content-Type': 'application/octet-stream'
         })
         return ''
@@ -51,15 +50,12 @@ class Files(object):
     @staticmethod
     def GET(hashtype, hashsum):
         """Create the local objects we need."""
-        files = loads(
-            requests.get(
-                '{0}/files?hashsum={1}&hashtype={2}'.format(
-                    get_config().get('metadata', 'url'),
-                    hashsum,
-                    hashtype
-                )
-            ).text
+        resp = requests.get(
+            '{}/files'.format(get_config().get('metadata', 'url')),
+            params={'hashsum': hashsum, 'hashtype': hashtype}
         )
+        assert resp.status_code == 200
+        files = resp.json()
 
         if not files:
             raise cherrypy.HTTPError('404 Not Found', 'File does not exist.')

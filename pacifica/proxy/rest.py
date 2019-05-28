@@ -26,9 +26,17 @@ class Root(object):
     not exposed by default the base objects are exposed
     """
 
-    exposed = False
+    exposed = True
 
     def __init__(self):
         """Create the local objects we need."""
         self.files = Files()
+
+    @staticmethod
+    @cherrypy.tools.json_out()
+    # pylint: disable=invalid-name
+    def GET():
+        """Return happy message about functioning service."""
+        return {'message': 'Pacifica Proxy Up and Running'}
+    # pylint: enable=invalid-name
 # pylint: enable=too-few-public-methods

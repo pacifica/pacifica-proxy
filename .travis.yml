@@ -14,15 +14,12 @@ stages:
 - test
 - test-docker
 - deploy
-env:
-  PEEWEE_URL: postgres://postgres:@localhost/pacifica_metadata
 script:
 - pip install .
 - export PROXY_CPCONFIG="$PWD/server.conf"
 - cd tests
-- coverage run --include='*/site-packages/pacifica/proxy/*' -m pytest -xv
-- coverage run --include='*/site-packages/pacifica/proxy/*' -a -m pacifica.proxy --stop-after-a-moment
-- coverage report -m --fail-under 100
+- coverage run -m pytest -xsv .
+- coverage report --include='*pacifica/proxy/*' -m --fail-under 100
 before_script:
 - pip install ansible
 - ansible-galaxy install pacifica.ansible_pacifica pacifica.ansible_travis
@@ -40,6 +37,7 @@ before_script:
 jobs:
   include:
   - stage: lint
+    before_script: skip
     script: pre-commit run -a
   - stage: test
   - stage: test-docker

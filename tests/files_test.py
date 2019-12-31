@@ -5,7 +5,7 @@ import os
 import requests
 from cherrypy.test import helper
 from pacifica.proxy.config import get_config
-from common_test import CommonCPSetup
+from .common_test import CommonCPSetup
 
 
 class TestFilesObject(helper.CPWebCase, CommonCPSetup):

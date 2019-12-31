@@ -8,7 +8,7 @@ from pacifica.proxy.globals import CHERRYPY_CONFIG
 
 
 # pylint: disable=too-few-public-methods
-class CommonCPSetup(object):
+class CommonCPSetup:
     """Common CherryPy setup class."""
 
     @staticmethod

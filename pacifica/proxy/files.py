@@ -6,7 +6,7 @@ import cherrypy
 from .config import get_config
 
 
-class Files(object):
+class Files:
     """
     CherryPy files object class.
 

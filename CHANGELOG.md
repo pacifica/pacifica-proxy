@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2019-12-31
+### Changed
+- Pull #22 Add Python 3.7 and 3.8 support by [dmlb2000](https://github.com/dmlb2000)
+- Pull #21 Update PyLint 2.0+ by [dmlb2000](https://github.com/dmlb2000)
+- Pull #20 Remove Python 2.7 support by [dmlb2000](https://github.com/dmlb2000)
+
 ## [0.1.4] - 2019-05-28
 ### Changed
 - Fix #16 Add Nice Status URL

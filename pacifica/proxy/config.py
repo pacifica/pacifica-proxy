@@ -2,10 +2,7 @@
 # -*- coding: utf-8 -*-
 """Configuration reading and validation module."""
 from os import getenv
-try:
-    from ConfigParser import SafeConfigParser
-except ImportError:  # pragma: no cover python 2 vs 3 issue
-    from configparser import ConfigParser as SafeConfigParser
+from configparser import ConfigParser as SafeConfigParser
 from .globals import CONFIG_FILE
 
 

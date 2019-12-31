@@ -4,7 +4,7 @@
 from json import loads
 from cherrypy.test import helper
 from pacifica.proxy.rest import Root
-from common_test import CommonCPSetup
+from .common_test import CommonCPSetup
 
 
 class TestRootObject(helper.CPWebCase, CommonCPSetup):

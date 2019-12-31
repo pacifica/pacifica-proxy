@@ -16,9 +16,6 @@ environment:
 install:
 - ps: >
     & "$env:PYTHON\python.exe" -m virtualenv C:\pacifica;
-    Invoke-WebRequest -Uri "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.5.zip" -OutFile "elasticsearch.zip";
-    Expand-Archive "elasticsearch.zip" -DestinationPath "C:\elasticsearch";
-    Start-Process C:\elasticsearch\elasticsearch-5.6.5\bin\elasticsearch;
     Invoke-WebRequest -Uri "http://nginx.org/download/nginx-1.14.0.zip" -OutFile nginx.zip;
     Expand-Archive "nginx.zip" -DestinationPath "C:\nginx";
     $nginx_conf = (Get-Content travis\nginx.conf.in);
@@ -63,6 +60,5 @@ test_script:
     pre-commit run -a;
     $env:PROXY_CPCONFIG = "$PWD/server.conf";
     pip install .; cd tests;
-    coverage run --include="*/site-packages/pacifica/proxy/*" -m pytest -xv;
-    coverage run --include="*/site-packages/pacifica/proxy/*" -a -m pacifica.proxy --stop-after-a-moment;
-    coverage report -m --fail-under=100;
+    coverage run -m pytest -xsv;
+    coverage report --include='*pacifica/proxy/*' -m --fail-under=100;

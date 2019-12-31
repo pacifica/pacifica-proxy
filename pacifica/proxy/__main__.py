@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """Main proxy module."""
 from __future__ import print_function
+from sys import argv as sys_argv
 from argparse import ArgumentParser, SUPPRESS
 from time import sleep
 from threading import Thread
@@ -45,7 +46,7 @@ def stop_later(doit=False):
     sleep_thread.start()
 
 
-def main():
+def main(argv=None):
     """Main method for running the server."""
     parser = ArgumentParser(description='Run the proxy server.')
     parser.add_argument('-c', '--config', metavar='CONFIG', type=str,
@@ -60,7 +61,9 @@ def main():
     parser.add_argument('--stop-after-a-moment', help=SUPPRESS,
                         default=False, dest='stop_later',
                         action='store_true')
-    args = parser.parse_args()
+    if not argv:  # pragma: no cover
+        argv = sys_argv
+    args = parser.parse_args(argv)
     stop_later(args.stop_later)
     cherrypy.config.update({'error_page.default': error_page_default})
     cherrypy.config.update({
@@ -68,7 +71,4 @@ def main():
         'server.socket_port': args.port
     })
     cherrypy.quickstart(Root(), '/', args.config)
-
-
-if __name__ == '__main__':
-    main()
+    return 0

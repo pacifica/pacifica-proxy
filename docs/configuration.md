@@ -102,3 +102,16 @@ documentation for more complicated deployments.
 $ pip install uwsgi
 $ uwsgi --http-socket :8180 --master --module pacifica.proxy.wsgi
 ```
+
+### NGINX Acceleration
+
+The Proxy service supports
+[NGINX Acceleration](https://www.nginx.com/resources/wiki/start/topics/examples/x-accel/),
+an example
+[NGINX Configuration](https://raw.githubusercontent.com/pacifica/pacifica-proxy/master/travis/nginx.conf.in)
+is used in the Travis CI pipeline. The setup is to have the Proxy
+service tell NGINX to redirect the request to the Archiveinterface
+internally. This configuration bypasses transferring the data through
+the Proxy service. This configuration requires the Archiveinterface
+and Proxy services to be accessible through the same border NGINX
+endpoint exposed to users.

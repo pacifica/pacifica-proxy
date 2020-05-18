@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6] - 2020-05-18
+### Changed
+- Fix #24 Add NGINX Acceleration Docs by [dmlb2000](https://github.com/dmlb2000)
+- Pull #27 Remove Requirements Pip>=20 by [dmlb2000](https://github.com/dmlb2000)
+
 ## [0.1.5] - 2019-12-31
 ### Changed
 - Pull #22 Add Python 3.7 and 3.8 support by [dmlb2000](https://github.com/dmlb2000)
